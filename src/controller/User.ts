@@ -15,7 +15,7 @@ const getUserController = async (
     res: Response,
 ): Promise<Response> => {
     const name = req.query.name;
-    if(name) {
+    if(!name) {
         return res.status(400).json({
             status: "Name not found",
         });
