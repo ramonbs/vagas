@@ -1,9 +1,9 @@
-const DATA = require("../../fakeData");
+const {fakeData} = require("../../fakeData");
 import { User, UserTypes } from "../types/User";
 
 // Primeiro teste
 const getUser = (userName: string): UserTypes => {
-    const user = DATA.find((user: User) => user.name === userName);
+    const user = fakeData.find((user: User) => user.name === userName);
 
     if (!user) {
         return {
@@ -19,7 +19,7 @@ const getUser = (userName: string): UserTypes => {
 
 // Primeiro teste
 const getAllUsers = () => {
-    const users = DATA;
+    const users = fakeData;
 
     if (!users) {
         return {
@@ -36,18 +36,18 @@ const getAllUsers = () => {
 // Segundo teste
 const createUser = (user: User) => {
     const newUser = {
-        id: DATA.length + 1,
+        id: fakeData.length + 1,
         name: user.name,
         job: user.job,
     };
 
-    DATA.push(newUser);
+    fakeData.push(newUser);
 
-    const isValidate = DATA.find((user: User) => user.name === user.name);
+    const isValidate = fakeData.find((user: User) => user.name === user.name);
 
     if (!isValidate) {
         return {
-            status: "INVALID_DATA",
+            status: "INVALID_fakeData",
         };
     }
 
@@ -58,7 +58,7 @@ const createUser = (user: User) => {
 
 // Terceiro teste
 const deleteUser = (userName: string) => {
-    const user = DATA.find((user: User) => user.name === userName);
+    const user = fakeData.find((user: User) => user.name === userName);
 
     if (!user) {
         return {
@@ -66,18 +66,38 @@ const deleteUser = (userName: string) => {
         };
     }
 
-    const index = DATA.indexOf(user);
+    const index = fakeData.indexOf(user);
 
-    DATA.splice(index, 1);
+    fakeData.splice(index, 1);
 
     return {
         status: "SUCCESSFUL",
     };
 };
 
+// Quarto teste
+const updateUser = (user: User) => {
+    const userToUpdate = fakeData.find((user: User) => user.name === user.name);
+
+    if (!userToUpdate) {
+        return {
+            status: "NOT_FOUND",
+        };
+    }
+
+    const index = fakeData.indexOf(userToUpdate);
+
+    fakeData[index] = user;
+
+    return {
+        status: "SUCCESSFUL",
+    };
+}
+
 module.exports = {
     getUser,
     getAllUsers,
     createUser,
     deleteUser,
+    updateUser,
 };

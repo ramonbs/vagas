@@ -7,5 +7,15 @@ const fakeData  =  [
     }
 ]
 
+const fakeData2  =  [
+    {
+        name: "João Oliveira",
+        timesPulled: 0,
+    }
+]
 
-module.exports = fakeData;
+
+module.exports = {
+    fakeData,
+    fakeData2
+};
