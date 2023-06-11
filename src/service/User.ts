@@ -8,14 +8,12 @@ const {
 } = require("../model/User");
 import { UserTypes, User } from "../types/User";
 
-
 // Primeiro teste
 const getUserService = async (userName: string): Promise<UserTypes> => {
     try {
         const user = await getUser(userName);
 
         console.log(user);
-        
 
         if (user.status === "NOT_FOUND") {
             return {
@@ -40,7 +38,6 @@ const getAllUsersService = async (): Promise<UserTypes> => {
         const users = await getAllUsers();
 
         console.log(users);
-
 
         if (users.status === "NOT_FOUND") {
             return {
@@ -82,7 +79,6 @@ const deleteUserService = async (userName: string): Promise<UserTypes> => {
 
         console.log(result);
 
-
         if (result.status === "NOT_FOUND") {
             return {
                 status: "NOT_FOUND",
@@ -102,9 +98,6 @@ const updateUserService = async (user: User): Promise<UserTypes> => {
     try {
         const result = await updateUser(user);
 
-        console.log(result);
-        
-
         if (result.status === "NOT_FOUND") {
             return {
                 status: "NOT_FOUND",
@@ -120,7 +113,9 @@ const updateUserService = async (user: User): Promise<UserTypes> => {
 };
 
 // Quinto teste
-const getTimesPulledUserService = async (userName: string): Promise<UserTypes> => {
+const getTimesPulledUserService = async (
+    userName: string,
+): Promise<UserTypes> => {
     try {
         const result = await getTimesPulledUser(userName);
 
@@ -136,7 +131,7 @@ const getTimesPulledUserService = async (userName: string): Promise<UserTypes> =
             status: "",
         };
     }
-}
+};
 
 module.exports = {
     getUserService,

@@ -15,7 +15,11 @@ const getUserController = async (
     res: Response,
 ): Promise<Response> => {
     const name = req.query.name;
-
+    if(name) {
+        return res.status(400).json({
+            status: "Name not found",
+        });
+    }
     const {user, status } = await getUserService(name?.toString() || "");
     
     if (!user) {
@@ -54,6 +58,12 @@ const createUserController = async (
 ): Promise<Response> => {
     const user = req.body;
 
+    if(!user.name && !user.job) {
+        return res.status(400).json({
+            status: "Name and job not found",
+        });
+    }
+
     const result = await createUserService(user);
 
     if (result.status === "NOT_FOUND") {
@@ -74,6 +84,12 @@ const deleteUserController = async (
 ): Promise<Response> => {
     const name = req.query.name;
 
+    if(!name) {
+        return res.status(400).json({
+            status: "Name not found",
+        });
+    }
+
     const result = await deleteUserService(name?.toString() || "");
 
     if (result.status === "NOT_FOUND") {
@@ -93,6 +109,12 @@ const updateUserController = async (
     res: Response,
 ): Promise<Response> => {
     const user = req.body;
+    
+    if(!user.name || !user.job) {
+        return res.status(400).json({
+            status: "Name or job not found",
+        });
+    }
 
     const result = await updateUserService(user);
 
@@ -110,6 +132,12 @@ const updateUserController = async (
 // Quinto teste
 const getTimesPulledUserController = async (req: Request, res: Response): Promise<Response> => {
     const name = req.query.name;
+    if(!name) {
+        return res.status(400).json({
+            status: "Name not found",
+        });
+    }
+
     const result = await getTimesPulledUserService(name?.toString() || "");
 
     if (result.status === "NOT_FOUND") {
