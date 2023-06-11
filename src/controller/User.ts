@@ -6,6 +6,7 @@ const {
     createUserService,
     deleteUserService,
     updateUserService,
+    getTimesPulledUserService,
 } = require("../service/User");
 
 // Primeiro teste
@@ -15,7 +16,7 @@ const getUserController = async (
 ): Promise<Response> => {
     const name = req.query.name;
 
-    const {user: { user }, status, userPulled: { timesPulled }} = await getUserService(name?.toString() || "");
+    const {user, status } = await getUserService(name?.toString() || "");
     
     if (!user) {
         return res.status(mapStatusHTTP(user)).json({
@@ -24,9 +25,7 @@ const getUserController = async (
     }
 
     return res.status(mapStatusHTTP(status)).json({
-        status,
         user,
-        timesPulled,
     });
 };
 
@@ -37,7 +36,7 @@ const getAllUsersController = async (
 ): Promise<Response> => {
     const users = await getAllUsersService();
 
-    if (!users) {
+    if (users.status === "NOT_FOUND") {
         return res.status(mapStatusHTTP(users)).json({
             status: "Users not found",
         });
@@ -57,7 +56,7 @@ const createUserController = async (
 
     const result = await createUserService(user);
 
-    if (!result) {
+    if (result.status === "NOT_FOUND") {
         return res.status(mapStatusHTTP(result)).json({
             status: "User not created",
         });
@@ -77,7 +76,7 @@ const deleteUserController = async (
 
     const result = await deleteUserService(name?.toString() || "");
 
-    if (!result) {
+    if (result.status === "NOT_FOUND") {
         return res.status(mapStatusHTTP(result)).json({
             status: "User not deleted",
         });
@@ -97,7 +96,7 @@ const updateUserController = async (
 
     const result = await updateUserService(user);
 
-    if (!result) {
+    if (result.status === "NOT_FOUND") {
         return res.status(mapStatusHTTP(result)).json({
             status: "User not updated",
         });
@@ -108,10 +107,27 @@ const updateUserController = async (
     });
 };
 
+// Quinto teste
+const getTimesPulledUserController = async (req: Request, res: Response): Promise<Response> => {
+    const name = req.query.name;
+    const result = await getTimesPulledUserService(name?.toString() || "");
+
+    if (result.status === "NOT_FOUND") {
+        return res.status(mapStatusHTTP(result.status)).json({
+            status: result.status,
+        });
+    }
+
+    return res.status(mapStatusHTTP(result.status)).json({
+        result,
+    });
+}
+
 module.exports = {
     getUserController,
     getAllUsersController,
     createUserController,
     deleteUserController,
     updateUserController,
+    getTimesPulledUserController,
 };

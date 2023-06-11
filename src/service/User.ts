@@ -4,23 +4,18 @@ const {
     createUser,
     deleteUser,
     updateUser,
+    getTimesPulledUser,
 } = require("../model/User");
-import { UserTypes, User, UserPulled } from "../types/User";
-const { fakeData2 } = require("../../fakeData");
+import { UserTypes, User } from "../types/User";
+
 
 // Primeiro teste
 const getUserService = async (userName: string): Promise<UserTypes> => {
     try {
         const user = await getUser(userName);
 
-        // Quarto teste
-        await fakeData2.map((user: UserPulled) => {
-            if (user.name === userName) {
-                user.timesPulled += 1;
-            }
-        });
-
-        const userPulled = fakeData2.find((user: UserPulled) => user.name === userName);
+        console.log(user);
+        
 
         if (user.status === "NOT_FOUND") {
             return {
@@ -31,7 +26,6 @@ const getUserService = async (userName: string): Promise<UserTypes> => {
         return {
             status: "GET_SUCCESSFUL",
             user,
-            userPulled,
         };
     } catch (error) {
         return {
@@ -44,6 +38,9 @@ const getUserService = async (userName: string): Promise<UserTypes> => {
 const getAllUsersService = async (): Promise<UserTypes> => {
     try {
         const users = await getAllUsers();
+
+        console.log(users);
+
 
         if (users.status === "NOT_FOUND") {
             return {
@@ -83,6 +80,9 @@ const deleteUserService = async (userName: string): Promise<UserTypes> => {
     try {
         const result = await deleteUser(userName);
 
+        console.log(result);
+
+
         if (result.status === "NOT_FOUND") {
             return {
                 status: "NOT_FOUND",
@@ -102,6 +102,9 @@ const updateUserService = async (user: User): Promise<UserTypes> => {
     try {
         const result = await updateUser(user);
 
+        console.log(result);
+        
+
         if (result.status === "NOT_FOUND") {
             return {
                 status: "NOT_FOUND",
@@ -116,10 +119,30 @@ const updateUserService = async (user: User): Promise<UserTypes> => {
     }
 };
 
+// Quinto teste
+const getTimesPulledUserService = async (userName: string): Promise<UserTypes> => {
+    try {
+        const result = await getTimesPulledUser(userName);
+
+        if (result.status === "NOT_FOUND") {
+            return {
+                status: "NOT_FOUND",
+            };
+        }
+
+        return result;
+    } catch (error) {
+        return {
+            status: "",
+        };
+    }
+}
+
 module.exports = {
     getUserService,
     getAllUsersService,
     createUserService,
     deleteUserService,
     updateUserService,
+    getTimesPulledUserService,
 };

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import JWT from '../utils/JWT';
+import JWT from '../utils/jwt';
 
 const requireLoginToken = (req: Request, res: Response, next: NextFunction) => {
   const token = req.get('Authorization');
@@ -7,12 +7,10 @@ const requireLoginToken = (req: Request, res: Response, next: NextFunction) => {
     return res.status(401).json({ message: 'Token not found' });
   }
 
-  const tokenValidation = JWT.validateToken(token);
-  if (!tokenValidation.valid) {
+  const tokenValidation = JWT.verify(token);
+  if (!tokenValidation) {
     return res.status(401).json({ message: 'Invalid token' });
   }
-
-  req.body.user = tokenValidation.payload;
 
   next();
 };

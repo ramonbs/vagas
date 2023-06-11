@@ -18,5 +18,6 @@ export type User = {
 export type UserPulled = {
     name: string;
     timesPulled: number;
+    status?: string;
 };
 

@@ -1,5 +1,5 @@
-const {fakeData} = require("../../fakeData");
-import { User, UserTypes } from "../types/User";
+const { fakeData, fakeData2 } = require("../../fakeData");
+import { User, UserTypes, UserPulled } from "../types/User";
 
 // Primeiro teste
 const getUser = (userName: string): UserTypes => {
@@ -92,7 +92,31 @@ const updateUser = (user: User) => {
     return {
         status: "SUCCESSFUL",
     };
-}
+};
+
+// Quinto teste
+const getTimesPulledUser = async (userName: string) => {
+    await fakeData2.map((user: UserPulled) => {
+        if (user.name === userName) {
+            user.timesPulled += 1;
+        }
+    });
+
+    const userPulled = fakeData2.find(
+        (user: UserPulled) => user.name === userName,
+    );
+
+    if (!userPulled) {
+        return {
+            status: "NOT_FOUND",
+        };
+    }
+
+    return {
+        status: "SUCCESSFUL",
+        userPulled,
+    };
+};
 
 module.exports = {
     getUser,
@@ -100,4 +124,5 @@ module.exports = {
     createUser,
     deleteUser,
     updateUser,
+    getTimesPulledUser,
 };
